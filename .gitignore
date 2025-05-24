@@ -1,0 +1,38 @@
+# Arquivos objeto
+*.o
+
+# Executáveis
+*.exe
+*.out
+*.app
+
+# Arquivos de log
+*.log
+
+# Arquivos temporários e backups
+*~
+*.swp
+*.bak
+
+# Diretórios de build
+/build/
+/bin/
+/obj/
+
+# Arquivos gerados pelo editor (exemplos: vim, emacs, etc)
+*.swp
+*.swo
+.*.swp
+
+# Arquivos de sistema do Windows
+Thumbs.db
+.DS_Store
+
+# CMake (se usar)
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Outros arquivos gerados automaticamente
+*.dSYM/

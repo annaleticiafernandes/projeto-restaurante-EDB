@@ -3,6 +3,7 @@
 #include <string.h>
 #include "salao.h"
 #include "cardapio.h"
+#include "cozinha.h"
 
 void limparBuffer(){
     char c;
@@ -89,10 +90,41 @@ void interfaceRemoverPrato(Pedido **cabeca) {
 
 // Função para processar pedido (placeholder para futuro desenvolvimento)
 void processarPedido(Pedido **cabeca) {
-    printf("\n--- PROCESSAR PEDIDO ---\n");
-    printf("Funcionalidade será implementada na parte da cozinha!\n");
-    printf("Por enquanto, apenas lista os pedidos pendentes:\n");
+    int idPedido;
+    printf("\n--- ENVIAR PEDIDO PARA COZINHA ---\n");
+
+    if (*cabeca == NULL) {
+        printf("Nenhum pedido pendente no salão.\n");
+        return;
+    }
+
     listarPedidosPendentes(*cabeca);
+
+    printf("Digite o ID do pedido a ser enviado: ");
+    scanf("%d", &idPedido);
+
+    Pedido *anterior = NULL;
+    Pedido *atual = *cabeca;
+
+    while (atual != NULL && atual->idPedido != idPedido) {
+        anterior = atual;
+        atual = atual->prox;
+    }
+
+    if (atual == NULL) {
+        printf("Pedido com ID %d não encontrado no salão.\n", idPedido);
+        return;
+    }
+
+    // Remove da lista do salão
+    if (anterior == NULL) {
+        *cabeca = atual->prox;
+    } else {
+        anterior->prox = atual->prox;
+    }
+
+    enfileirarPedido(atual);
+    free(atual); // Libera o pedido original (pois a cozinha já tem sua cópia)
 }
 
 int main() {
