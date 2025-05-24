@@ -11,4 +11,5 @@ void exibirPratosPrincipais();
 
 void exibirSobremesas();
 
+int obterIndicePrato(const char *nomePrato);
 #endif

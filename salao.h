@@ -30,7 +30,5 @@ void removerPrato(Pedido **cabeca, int idPedido, const char *nomePrato);
 
 // função para listar pedios pendentes
 void listarPedidosPendentes(Pedido *cabeca);
-void interfaceAdicionarPedido(Pedido **cabeca);
-// funções para processar pedido (transferir para a cozinha)
 
 #endif

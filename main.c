@@ -11,26 +11,28 @@ void limparBuffer(){
 }
 
 void menuPrincipal(){
-    printf("---- MENU PRINCIPAL ----\n");
+    printf("\n");
+    printf("-------- MENU PRINCIPAL --------\n");
     printf("1. Adicionar Pedido\n");
     printf("2. Remover Prato de um Pedido\n");
     printf("3. Listar Pedidos Pendentes\n");
-    printf("4. Exibir Cardápio\n");
+    printf("4. Exibir Cardapio\n");
     printf("5. Processar Pedido (Enviar para a Cozinha)\n");
     printf("0. Sair\n");
-    printf("------------------------\n");
-    printf("Escolha uma opção: ");
+    printf("--------------------------------\n");
+    printf("Escolha uma opcao: ");
 }
 
+
 // Função para adicionar um pedido com interface
-void adicionandoPedido(Pedido **cabeca){
+void InterfaceAdicionarPedido(Pedido **cabeca){
     int numMesa, idPedido, qntdPratos, indicePrato;
     char prato[20][50]; // Supondo que o máximo de pratos por pedido seja 10
     char nomePrato[50];
 
-    printf("\n---- ADICIONAR PEDIDO ----\n");
+    printf("\n------- ADICIONAR PEDIDO -------\n");
 
-    printf("Número da Mesa: ");
+    printf("Numero da Mesa: ");
     scanf("%d", &numMesa);
 
     printf("ID do Pedido: ");
@@ -40,7 +42,7 @@ void adicionandoPedido(Pedido **cabeca){
     scanf("%d", &qntdPratos);   
 
     if(qntdPratos <= 0 || qntdPratos > 20){
-        printf("Quantidade inválida de pratos!\n");
+        printf("Quantidade invalida de pratos!\n");
         return;
     }
 
@@ -51,7 +53,7 @@ void adicionandoPedido(Pedido **cabeca){
         scanf("%d", &indicePrato);
 
         if(indicePrato < 1 || indicePrato > 15){
-            printf("Opção inválida! Tente novamente.\n");
+            printf("Opção invalida! Tente novamente.\n");
             i--; // Decrementa o contador para repetir a escolha
             continue;
         }
@@ -64,11 +66,12 @@ void adicionandoPedido(Pedido **cabeca){
     adicionarPedido(cabeca, numMesa, idPedido, prato, qntdPratos);
 }
 
+
 void interfaceRemoverPrato(Pedido **cabeca) {
     int idPedido;
     char nomePrato[50];
     
-    printf("\n--- REMOVER PRATO DO PEDIDO ---\n");
+    printf("\n---- REMOVER PRATO DO PEDIDO ----\n");
     
     // Primeiro mostra os pedidos pendentes
     printf("Pedidos pendentes:\n");
@@ -88,13 +91,14 @@ void interfaceRemoverPrato(Pedido **cabeca) {
     removerPrato(cabeca, idPedido, nomePrato);
 }
 
+
 // Função para processar pedido (placeholder para futuro desenvolvimento)
 void processarPedido(Pedido **cabeca) {
     int idPedido;
     printf("\n--- ENVIAR PEDIDO PARA COZINHA ---\n");
 
     if (*cabeca == NULL) {
-        printf("Nenhum pedido pendente no salão.\n");
+        printf("Nenhum pedido pendente no salao.\n");
         return;
     }
 
@@ -112,7 +116,7 @@ void processarPedido(Pedido **cabeca) {
     }
 
     if (atual == NULL) {
-        printf("Pedido com ID %d não encontrado no salão.\n", idPedido);
+        printf("Pedido com ID %d nao encontrado no salao.\n", idPedido);
         return;
     }
 
@@ -140,7 +144,7 @@ int main() {
         
         switch (opcao) {
             case 1:
-                adicionandoPedido(&cabecaSalao);
+                InterfaceAdicionarPedido(&cabecaSalao);
                 break;
                 
             case 2:
@@ -148,7 +152,7 @@ int main() {
                 break;
                 
             case 3:
-                printf("\n--- PEDIDOS PENDENTES NO SALÃO ---\n");
+                printf("\n--- PEDIDOS PENDENTES NO SALAO ---\n");
                 listarPedidosPendentes(cabecaSalao);
                 break;
                 
@@ -166,13 +170,8 @@ int main() {
                 break;
                 
             default:
-                printf("Opção inválida! Tente novamente.\n");
+                printf("Opcao invalida! Tente novamente.\n");
                 break;
-        }
-        
-        if (opcao != 0) {
-            printf("\nPressione Enter para continuar...");
-            getchar();
         }
         
     } while (opcao != 0);
@@ -182,3 +181,4 @@ int main() {
     
     return 0;
 }
+

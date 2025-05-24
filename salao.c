@@ -120,7 +120,7 @@ void removerPrato(Pedido **cabeca, int idPedido, const char *nomePrato){
         free(pedidoAtual); // libera a memória do pedido removido
         printf("Pedido %d removido com sucesso!\n", idPedido);
     }
-}
+} 
 
 void listarPedidosPendentes(Pedido *cabeca){
     if(cabeca == NULL){ // verifica se a lista de pedidos está vazia

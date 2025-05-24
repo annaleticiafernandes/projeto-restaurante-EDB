@@ -3,25 +3,25 @@
 #include "cardapio.h"
 
 void exibirEntradas(){
-    printf("---- ENTRADAS ----\n");
+    printf("----------- ENTRADAS -----------\n");
     printf("1. Sopa de Cebola\n");
     printf("2. Salada Caesar\n");
     printf("3. Bruschetta\n");
     printf("4. Carpaccio de Carne\n");
-    printf("5. Camarão ao Alho\n");
+    printf("5. Camarao ao Alho\n");
 }
 
 void exibirPratosPrincipais(){
-    printf("---- PRATOS PRINCIPAIS ----\n");
-    printf("6. Lasanha à Bolonhesa\n");
-    printf("7. Filé Mignon com Fritas\n");
+    printf("------- PRATOS PRINCIPAIS -------\n");
+    printf("6. Lasanha a Bolonhesa\n");
+    printf("7. File Mignon com Fritas\n");
     printf("8. Frango Grelhado com Legumes\n");
-    printf("9. Bacalhau à Gomes de Sá\n");
+    printf("9. Bacalhau a Gomes de Sa\n");
     printf("10. Risoto de Cogumelos\n");
 }
 
 void exibirSobremesas(){
-    printf("---- SOBREMESAS ----\n");
+    printf("---------- SOBREMESAS ----------\n");
     printf("11. Tiramisu\n");
     printf("12. Cheesecake de Frutas Vermelhas\n");
     printf("13. Mousse de Chocolate\n");
@@ -30,13 +30,15 @@ void exibirSobremesas(){
 }
 
 void exibirCardapio(){
-    printf("---- CARDÁPIO ----\n");
+    printf("\n");
+    printf("----------- CARDAPIO -----------\n");
+    printf("\n");
     exibirEntradas();
     printf("\n");
     exibirPratosPrincipais();
     printf("\n");
     exibirSobremesas();
-    printf("----------------------\n");
+    printf("--------------------------------\n");
 }
 
 void obterNomePrato(int indice, char *nomePrato){
@@ -54,19 +56,19 @@ void obterNomePrato(int indice, char *nomePrato){
             strcpy(nomePrato, "Carpaccio de Carne");
             break;
         case 5:
-            strcpy(nomePrato, "Camarão ao Alho");
+            strcpy(nomePrato, "Camarao ao Alho");
             break;
         case 6:
-            strcpy(nomePrato, "Lasanha à Bolonhesa");
+            strcpy(nomePrato, "Lasanha a Bolonhesa");
             break;
         case 7:
-            strcpy(nomePrato, "Filé Mignon com Fritas");
+            strcpy(nomePrato, "File Mignon com Fritas");
             break;
         case 8:
             strcpy(nomePrato, "Frango Grelhado com Legumes");
             break;
         case 9:
-            strcpy(nomePrato, "Bacalhau à Gomes de Sá");
+            strcpy(nomePrato, "Bacalhau a Gomes de Sa");
             break;
         case 10:
             strcpy(nomePrato, "Risoto de Cogumelos");
@@ -87,7 +89,8 @@ void obterNomePrato(int indice, char *nomePrato){
             strcpy(nomePrato, "Sorvete de Baunilha com Calda de Morango");
             break;
         default:
-            printf("Prato não encontrado.\n");
+            printf("Prato nao encontrado.\n");
             break;
     }
 }
+
