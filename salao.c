@@ -6,9 +6,9 @@
 
 
 void adicionarPedido(Pedido **cabeca, int numMesa, int idPedido, char prato[][50], int qntdPratos){
-    Pedido *novoPedido = malloc(sizeof(Pedido)); // aloca um novo nó do tipo Pedido
+    Pedido *novoPedido = malloc(sizeof(Pedido)); // Aloca um nó do pedido
     
-    if(novoPedido == NULL){ // verifica se memoria foi alocada corretamente
+    if(novoPedido == NULL){ 
         printf("Erro ao alocar memória para o pedido!\n");
         return;
     }
@@ -16,8 +16,8 @@ void adicionarPedido(Pedido **cabeca, int numMesa, int idPedido, char prato[][50
     // inicializa os dados do novo pedido
     novoPedido->numMesa = numMesa;
     novoPedido->idPedido = idPedido;
-    novoPedido->listaPratos = NULL; // inicializa a lista de pratos como vazia
-    novoPedido->prox = NULL; // inicializa o próximo pedido como NULL, pois ainda não está ligado a nada
+    novoPedido->listaPratos = NULL; 
+    novoPedido->prox = NULL;
 
     // Adiciona os pratos à lista de pratos do pedido
     for(int i=0; i < qntdPratos; i++){
@@ -28,29 +28,28 @@ void adicionarPedido(Pedido **cabeca, int numMesa, int idPedido, char prato[][50
             continue;
         }
 
-        strcpy(novoPrato->dadosPrato.nome, prato[i]); // copia o nome do prato
+        strcpy(novoPrato->dadosPrato.nome, prato[i]);
         novoPrato->prox = novoPedido->listaPratos; // adiciona o novo prato no início da lista de PRATOS de um único pedido
         novoPedido->listaPratos = novoPrato; // atualiza o ponteiro da lista de pratos do pedido
     }
 
-    if(*cabeca == NULL){ // caso a lista de pedidos esteja vazia
-        *cabeca = novoPedido; // o novo pedido se torna o primeiro da lista
+    if(*cabeca == NULL){ 
+        *cabeca = novoPedido; 
         printf("Pedido adicionado com sucesso!\n");
         return;
     }
     
     Pedido *atual = *cabeca;
 
-    while(atual->prox != NULL){ // percorre a lista de pedidos até o final
+    while(atual->prox != NULL){
         atual = atual->prox; // atualiza o ponteiro para o próximo pedido
     }
 
-    atual->prox = novoPedido; // adiciona o novo pedido no final da lista
+    atual->prox = novoPedido;
     printf("Pedido adicionado com sucesso!\n");
 }
 
 void removerPrato(Pedido **cabeca, int idPedido, const char *nomePrato){
-    // Verifica se a lista de pedidos está vazia
     if(*cabeca == NULL){
         printf("Nenhum pedido encontrado.\n");
         return;
@@ -62,7 +61,6 @@ void removerPrato(Pedido **cabeca, int idPedido, const char *nomePrato){
         pedidoAtual = pedidoAtual->prox; // avança para o próximo pedido    
     }
 
-    // Se o pedido não foi encontrado, exibe uma mensagem e retorna
     if(pedidoAtual == NULL){
         printf("Pedido com ID %d não encontrado.\n", idPedido);
         return;
@@ -71,7 +69,6 @@ void removerPrato(Pedido **cabeca, int idPedido, const char *nomePrato){
     // PedidoAtual aponta para o pedido correto
     // Removemos o prato da lista de pratos dentro deste pedido
     
-    //verifica se a lista de pratos dentro do pedido está vazia
     if(pedidoAtual->listaPratos == NULL){
         printf("Nenhum prato encontrado no pedido %d.\n", idPedido);
         return;
@@ -86,56 +83,51 @@ void removerPrato(Pedido **cabeca, int idPedido, const char *nomePrato){
         pratoAtual = pratoAtual->prox; // avança para o próximo prato
     }
 
-    // Se o prato não foi encontrado, exibe uma mensagem e retorna
     if(pratoAtual == NULL){
         printf("Prato %s não encontrado no pedido %d.\n", nomePrato, idPedido);
         return;
     }
 
     // Remove o nó do prato encontrado da lista interna do pedido
-    if(pratoAnterior == NULL){ // o prato a ser removido é o primeiro da lista
-        pedidoAtual->listaPratos = pratoAtual->prox; // atualiza o ponteiro da lista de pratos
+    if(pratoAnterior == NULL){
+        pedidoAtual->listaPratos = pratoAtual->prox; 
     } else {
-        pratoAnterior->prox = pratoAtual->prox; // o prato a ser removido não é o primeiro, ou seja, está no meio ou no final da lista
+        pratoAnterior->prox = pratoAtual->prox;
     }
 
-    // Libera a memória do nó do prato removido
     free(pratoAtual);
     printf("Prato %s removido do pedido %d com sucesso!\n", nomePrato, idPedido);
 
-
-    // EXTRA!!!
-    // Se a lista de pratos do pedido estiver vazia após a remoção, podemos remover o pedido também
+    // Se a lista de pratos do pedido estiver vazia após a remoção, remove-se o pedido da lista de pedidos
     if(pedidoAtual->listaPratos == NULL){
-        // Se o pedido for o primeiro da lista de pedidos
         if(*cabeca == pedidoAtual){
-            *cabeca = pedidoAtual->prox; // atualiza o ponteiro da lista de pedidos
+            *cabeca = pedidoAtual->prox; 
         } else {
             Pedido *pedidoAnterior = *cabeca;
             while(pedidoAnterior->prox != pedidoAtual){
-                pedidoAnterior = pedidoAnterior->prox; // avança para o próximo pedido
+                pedidoAnterior = pedidoAnterior->prox; 
             }
-            pedidoAnterior->prox = pedidoAtual->prox; // remove o pedido da lista de pedidos
+            pedidoAnterior->prox = pedidoAtual->prox; 
         }
-        free(pedidoAtual); // libera a memória do pedido removido
+        free(pedidoAtual);
         printf("Pedido %d removido com sucesso!\n", idPedido);
     }
 } 
 
 void listarPedidosPendentes(Pedido *cabeca){
-    if(cabeca == NULL){ // verifica se a lista de pedidos está vazia
+    if(cabeca == NULL){ 
         printf("Nenhum pedido pendente.\n");
         return;
     }
 
-    Pedido *atual = cabeca; // inicializa o ponteiro atual para percorrer a lista de pedidos
+    Pedido *atual = cabeca; 
 
-    while(atual != NULL){ // percorre a lista de pedidos
+    while(atual != NULL){ 
         printf("Mesa: %d, ID do Pedido: %d\n", atual->numMesa, atual->idPedido);
         printf("Pratos:\n");
     
-        PratoNode *pratoAtual = atual->listaPratos; // inicializa o ponteiro para percorrer a lista de pratos do pedido
-        if(pratoAtual == NULL){ // verifica se a lista de pratos está vazia
+        PratoNode *pratoAtual = atual->listaPratos;
+        if(pratoAtual == NULL){ 
             printf("Nenhum prato neste pedido.\n");
         } else {
             while(pratoAtual != NULL){ // percorre a lista de pratos

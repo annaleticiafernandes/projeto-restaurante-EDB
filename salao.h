@@ -1,8 +1,6 @@
 #ifndef SALAO_H
 #define SALAO_H
 
-
-// estrutura de um único prato
 typedef struct Prato {
     char nome[50];
 } Prato;
@@ -22,13 +20,8 @@ typedef struct Pedido{
 } Pedido;
 
 // OPERAÇÕES
-// Função para adicionar um pedido à lista de pedidos
 void adicionarPedido(Pedido **cabeca, int numMesa, int idPedido, char prato[][50], int qntdPratos);
-
-// função para remover prato específico
 void removerPrato(Pedido **cabeca, int idPedido, const char *nomePrato);
-
-// função para listar pedios pendentes
 void listarPedidosPendentes(Pedido *cabeca);
 
 #endif
