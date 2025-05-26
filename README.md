@@ -1,5 +1,5 @@
 
-# 📋 Sistema de Gerenciamento de Pedidos – Restaurante (Simulação em C)
+# 📋 Sistema de Gerenciamento de Pedidos – Restaurante Algoritmo do Sabor
 
 Este projeto simula o funcionamento de um sistema de pedidos em um restaurante. Ele permite o controle dos pedidos realizados no salão e o envio desses pedidos para a cozinha para serem processados.
 
