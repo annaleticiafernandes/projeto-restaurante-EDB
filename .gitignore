@@ -32,7 +32,6 @@ Thumbs.db
 CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake
-Makefile
 
 # Outros arquivos gerados automaticamente
 *.dSYM/
