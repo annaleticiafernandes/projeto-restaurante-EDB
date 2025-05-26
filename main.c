@@ -15,7 +15,7 @@ int main() {
     Pedido *cabecaSalao = NULL;
     int opcao;
     
-    printf("Bem-vindo ao Sistema de Gerenciamento de Pedidos do Restaurante!\n");
+    printf("Bem-vindo ao Restaurante Algoritmo do Sabor!\n");
     
     do {
         menuPrincipal();
