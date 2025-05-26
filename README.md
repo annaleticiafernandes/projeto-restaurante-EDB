@@ -67,9 +67,8 @@ Mostra todas as opções disponíveis separadas por categoria:
 
 ---
 
-### 5. Processar Pedido
-- Solicita o ID do pedido que será enviado para a cozinha  
-- Remove o pedido do salão  
+### 5. Processar Pedido  
+- Remove o pedido do salão de forma sequencial 
 - Copia os dados do pedido e adiciona à fila da cozinha  
 - Exibe confirmação do envio
 
