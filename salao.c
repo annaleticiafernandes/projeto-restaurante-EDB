@@ -41,7 +41,7 @@ void adicionarPedido(Pedido **cabeca, int numMesa, int idPedido, char prato[][50
     printf("\033[32mPedido adicionado com sucesso!\033[0m\n");
 }
 
-// Remove um prato de um pedido; remove o pedido se não restarem pratos
+// Remove um prato de um pedido (remove o pedido se não restarem pratos)
 void removerPrato(Pedido **cabeca, int idPedido, const char *nomePrato) {
     Pedido *atual = *cabeca;
     Pedido *anterior = NULL;

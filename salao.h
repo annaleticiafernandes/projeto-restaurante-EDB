@@ -21,7 +21,7 @@ typedef struct pedido {
 void adicionarPedido(Pedido **cabeca, int numMesa, int idPedido, char pratos[][50], int qtdPratos);
 void listarPedidosPendentes(Pedido *cabeca);
 
-// Novas funções auxiliares para o main.c
+// Funções auxiliares para o main.c
 Pedido* copiarPedido(Pedido *pedidoOriginal);
 void imprimirPedido(Pedido *pedido);
 void liberarPedido(Pedido *pedido);
