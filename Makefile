@@ -25,8 +25,21 @@ $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Limpa arquivos gerados
+# Detecta o sistema operacional
+ifeq ($(OS),Windows_NT)
+    RM = del /Q
+else
+    RM = rm -f
+endif
+
+# Arquivos a serem removidos
+OBJS = main.o salao.o cardapio.o cozinha.o
+TARGET = restaurante
+
+.PHONY: clean
+
 clean:
-	rm -f $(OBJS) $(TARGET)
+	$(RM) $(OBJS) $(TARGET)
 
 # Facilita a reconstrução completa
 rebuild: clean all
