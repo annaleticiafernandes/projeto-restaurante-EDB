@@ -49,7 +49,7 @@ int main() {
                 break;
                 
             default:
-                printf("Opcao invalida! Tente novamente.\n");
+                printf("\033[31mOpcao invalida! Tente novamente.\033[0m\n");
                 break;
         }
         
@@ -67,15 +67,15 @@ void limparBuffer(){
 
 void menuPrincipal(){
     printf("\n");
-    printf("-------- MENU PRINCIPAL --------\n");
-    printf("1. Adicionar Pedido\n");
-    printf("2. Remover Prato de um Pedido\n");
-    printf("3. Listar Pedidos Pendentes\n");
-    printf("4. Exibir Cardapio\n");
-    printf("5. Processar Pedido (Enviar para a Cozinha)\n");
-    printf("0. Sair\n");
-    printf("--------------------------------\n");
-    printf("Escolha uma opcao: ");
+    printf("\033[1m-------- MENU PRINCIPAL --------\033[0m\n");
+    printf("\033[1m1. Adicionar Pedido\033[0m\n");
+    printf("\033[1m2. Remover Prato de um Pedido\033[0m\n");
+    printf("\033[1m3. Listar Pedidos Pendentes\033[0m\n");
+    printf("\033[1m4. Exibir Cardapio\033[0m\n");
+    printf("\033[1m5. Processar Pedido (Enviar para a Cozinha)\033[0m\n");
+    printf("\033[1m0. Sair\033[0m\n");
+    printf("\033[1m--------------------------------\033[0m\n");
+    printf("\033[1mEscolha uma opcao: \033[0m");
 }
 
 // Função para adicionar um pedido com interface
@@ -96,7 +96,7 @@ void InterfaceAdicionarPedido(Pedido **cabeca){
     scanf("%d", &qntdPratos);   
 
     if(qntdPratos <= 0 || qntdPratos > 20){
-        printf("Quantidade invalida de pratos!\n");
+        printf("\033[31mQuantidade invalida de pratos!\033[0m\n");
         return;
     }
 
@@ -107,14 +107,14 @@ void InterfaceAdicionarPedido(Pedido **cabeca){
         scanf("%d", &indicePrato);
 
         if(indicePrato < 1 || indicePrato > 15){
-            printf("Opçao invalida! Tente novamente.\n");
+            printf("\033[31mOpçao invalida! Tente novamente.\033[0m\n");
             i--; 
             continue;
         }
 
         obterNomePrato(indicePrato, nomePrato);
         strcpy(prato[i], nomePrato);
-        printf("Prato adiconado: %s\n", nomePrato);
+        printf("\033[32mPrato adicionado: %s\033[0m\n", nomePrato);
     }
 
     adicionarPedido(cabeca, numMesa, idPedido, prato, qntdPratos);
@@ -146,13 +146,13 @@ void interfaceRemoverPrato(Pedido **cabeca) {
     
     // Verifica se o pedido foi encontrado
     if(pedidoAtual == NULL) {
-        printf("Pedido com ID %d nao encontrado.\n", idPedido);
+        printf("\033[31mPedido com ID %d nao encontrado.\033[0m\n", idPedido);
         return;
     }
     
     // Verifica se o pedido tem pratos
     if(pedidoAtual->listaPratos == NULL) {
-        printf("Nenhum prato encontrado no pedido %d.\n", idPedido);
+        printf("\033[31mNenhum prato encontrado no pedido %d.\033[0m\n", idPedido);
         return;
     }
     
@@ -171,7 +171,7 @@ void interfaceRemoverPrato(Pedido **cabeca) {
     scanf("%d", &indiceSelecionado);
     
     if(indiceSelecionado < 1 || indiceSelecionado >= contador) {
-        printf("Indice invalido! Operacao cancelada.\n");
+        printf("\033[31mIndice invalido! Operacao cancelada.\033[0m\n");
         return;
     }
     
@@ -196,7 +196,7 @@ void interfaceRemoverPrato(Pedido **cabeca) {
     strcpy(nomePratoRemovido, pratoAtual->dadosPrato.nome);
     
     free(pratoAtual);
-    printf("Prato '%s' removido do pedido %d com sucesso!\n", nomePratoRemovido, idPedido);
+    printf("\033[32mPrato '%s' removido do pedido %d com sucesso!\033[0m\n", nomePratoRemovido, idPedido);
     
     // Remove o pedido se não há mais pratos
     if(pedidoAtual->listaPratos == NULL) {
@@ -211,45 +211,29 @@ void interfaceRemoverPrato(Pedido **cabeca) {
         }
         
         free(pedidoAtual);
-        printf("Pedido %d removido completamente (nao tinha mais pratos).\n", idPedido);
+        printf("\033[32mPedido %d removido completamente (nao tinha mais pratos).\033[0m\n", idPedido);
     }
 }
 
 // Função para processar pedido
 void processarPedido(Pedido **cabeca) {
-    int idPedido;
-    printf("\n--- ENVIAR PEDIDO PARA COZINHA ---\n");
+    printf("\033[32m\n--- PEDIDO ENVIADO PARA COZINHA ---\033[0m\n");
 
     if (*cabeca == NULL) {
         printf("Nenhum pedido pendente no salao.\n");
         return;
     }
 
-    listarPedidosPendentes(*cabeca);
-
-    printf("Digite o ID do pedido a ser enviado: ");
-    scanf("%d", &idPedido);
-
-    Pedido *anterior = NULL;
     Pedido *atual = *cabeca;
 
-    while (atual != NULL && atual->idPedido != idPedido) {
-        anterior = atual;
-        atual = atual->prox;
-    }
+    *cabeca = atual->prox;
+    atual->prox = NULL;
 
-    if (atual == NULL) {
-        printf("Pedido com ID %d nao encontrado no salao.\n", idPedido);
-        return;
-    }
+    Pedido *copia = copiarPedido(atual);
+    enfileirarPedido(copia);
 
-    // Remove da lista do salão
-    if (anterior == NULL) {
-        *cabeca = atual->prox;
-    } else {
-        anterior->prox = atual->prox;
-    }
+    printf("\033[32mPedido processado:\033[0m\n");
+    imprimirPedido(atual);
 
-    enfileirarPedido(atual);
-    free(atual); // Libera o pedido original (pois a cozinha já tem sua cópia)
+    liberarPedido(atual);   
 }

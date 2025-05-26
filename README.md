@@ -13,12 +13,6 @@ O sistema está organizado em módulos:
 - **salao.c / salao.h** – Lógica da lista ligada de pedidos feita no salão.
 - **cardapio.c / cardapio.h** – Exibição do cardápio e nome dos pratos.
 - **cozinha.c / cozinha.h** – Gerencia a fila de pedidos processados na cozinha.
-- **fila.c / fila.h** – Implementação auxiliar de estrutura de fila para uso interno na cozinha.
-
-### Estruturas usadas:
-
-- **Pedido** – Cada pedido contém o número da mesa, ID, lista de pratos e ponteiro para o próximo pedido.
-- **PratoNode** – Lista ligada interna com os pratos de um pedido.
 
 ---
 

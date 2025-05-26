@@ -2,143 +2,191 @@
 #include <stdlib.h>
 #include <string.h>
 #include "salao.h"
-#include "cardapio.h"
 
-
-void adicionarPedido(Pedido **cabeca, int numMesa, int idPedido, char prato[][50], int qntdPratos){
-    Pedido *novoPedido = malloc(sizeof(Pedido)); // Aloca um nó do pedido
-    
-    if(novoPedido == NULL){ 
-        printf("Erro ao alocar memória para o pedido!\n");
-        return;
-    }
-    
-    // inicializa os dados do novo pedido
-    novoPedido->numMesa = numMesa;
-    novoPedido->idPedido = idPedido;
-    novoPedido->listaPratos = NULL; 
-    novoPedido->prox = NULL;
+// Adiciona um novo pedido à lista
+void adicionarPedido(Pedido **cabeca, int numMesa, int idPedido, char prato[][50], int qntdPratos) {
+    Pedido *novo = (Pedido *)malloc(sizeof(Pedido));
+    novo->numMesa = numMesa;
+    novo->idPedido = idPedido;
+    novo->listaPratos = NULL;
+    novo->prox = NULL;
 
     // Adiciona os pratos à lista de pratos do pedido
-    for(int i=0; i < qntdPratos; i++){
-        PratoNode *novoPrato = malloc(sizeof(PratoNode));
+    PratoNode *ultimoPrato = NULL;
 
-        if(novoPrato == NULL){
-            printf("Erro ao alocar memória para o prato!\n");
-            continue;
-        }
-
+    for (int i = 0; i < qntdPratos; i++) {
+        PratoNode *novoPrato = (PratoNode *)malloc(sizeof(PratoNode));
         strcpy(novoPrato->dadosPrato.nome, prato[i]);
-        novoPrato->prox = novoPedido->listaPratos; // adiciona o novo prato no início da lista de PRATOS de um único pedido
-        novoPedido->listaPratos = novoPrato; // atualiza o ponteiro da lista de pratos do pedido
+        novoPrato->prox = NULL;
+
+        if (novo->listaPratos == NULL) {
+            novo->listaPratos = novoPrato;
+        } else {
+            ultimoPrato->prox = novoPrato;
+        }
+        ultimoPrato = novoPrato;
     }
 
-    if(*cabeca == NULL){ 
-        *cabeca = novoPedido; 
-        printf("Pedido adicionado com sucesso!\n");
-        return;
+    // Adiciona o pedido ao final da lista
+    if (*cabeca == NULL) {
+        *cabeca = novo;
+    } else {
+        Pedido *atual = *cabeca;
+        while (atual->prox != NULL) {
+            atual = atual->prox;
+        }
+        atual->prox = novo;
     }
-    
-    Pedido *atual = *cabeca;
 
-    while(atual->prox != NULL){
-        atual = atual->prox; // atualiza o ponteiro para o próximo pedido
-    }
-
-    atual->prox = novoPedido;
-    printf("Pedido adicionado com sucesso!\n");
+    printf("\033[32mPedido adicionado com sucesso!\033[0m\n");
 }
 
-void removerPrato(Pedido **cabeca, int idPedido, const char *nomePrato){
-    if(*cabeca == NULL){
-        printf("Nenhum pedido encontrado.\n");
+// Remove um prato de um pedido; remove o pedido se não restarem pratos
+void removerPrato(Pedido **cabeca, int idPedido, const char *nomePrato) {
+    Pedido *atual = *cabeca;
+    Pedido *anterior = NULL;
+
+    while (atual != NULL && atual->idPedido != idPedido) {
+        anterior = atual;
+        atual = atual->prox;
+    }
+
+    if (atual == NULL) {
+        printf("\033[31mPedido com ID %d nao encontrado.\033[0m\n", idPedido);
         return;
     }
 
-    // Percorre a lista de pedidos para encontrar o pedido com o idPedido especificado
-    Pedido *pedidoAtual = *cabeca;
-    while(pedidoAtual != NULL && pedidoAtual->idPedido != idPedido){
-        pedidoAtual = pedidoAtual->prox; // avança para o próximo pedido    
-    }
-
-    if(pedidoAtual == NULL){
-        printf("Pedido com ID %d não encontrado.\n", idPedido);
-        return;
-    }
-
-    // PedidoAtual aponta para o pedido correto
-    // Removemos o prato da lista de pratos dentro deste pedido
-    
-    if(pedidoAtual->listaPratos == NULL){
-        printf("Nenhum prato encontrado no pedido %d.\n", idPedido);
-        return;
-    }
-
-    // Percorre a lista de pratos para encontrar o prato com o nome especificado
+    PratoNode *pratoAtual = atual->listaPratos;
     PratoNode *pratoAnterior = NULL;
-    PratoNode *pratoAtual = pedidoAtual->listaPratos;
+    int encontrado = 0;
 
-    while(pratoAtual != NULL && strcmp(pratoAtual->dadosPrato.nome, nomePrato) != 0){
-        pratoAnterior = pratoAtual; // atualiza o ponteiro do prato anterior
-        pratoAtual = pratoAtual->prox; // avança para o próximo prato
+    while (pratoAtual != NULL) {
+        if (strcmp(pratoAtual->dadosPrato.nome, nomePrato) == 0) {
+            encontrado = 1;
+            if (pratoAnterior == NULL) {
+                atual->listaPratos = pratoAtual->prox;
+            } else {
+                pratoAnterior->prox = pratoAtual->prox;
+            }
+            free(pratoAtual);
+            break;
+        }
+        pratoAnterior = pratoAtual;
+        pratoAtual = pratoAtual->prox;
     }
 
-    if(pratoAtual == NULL){
-        printf("Prato %s não encontrado no pedido %d.\n", nomePrato, idPedido);
+    if (!encontrado) {
+        printf("\033[31mPrato '%s' nao encontrado no pedido.\033[0m\n", nomePrato);
         return;
     }
 
-    // Remove o nó do prato encontrado da lista interna do pedido
-    if(pratoAnterior == NULL){
-        pedidoAtual->listaPratos = pratoAtual->prox; 
-    } else {
-        pratoAnterior->prox = pratoAtual->prox;
-    }
-
-    free(pratoAtual);
-    printf("Prato %s removido do pedido %d com sucesso!\n", nomePrato, idPedido);
-
-    // Se a lista de pratos do pedido estiver vazia após a remoção, remove-se o pedido da lista de pedidos
-    if(pedidoAtual->listaPratos == NULL){
-        if(*cabeca == pedidoAtual){
-            *cabeca = pedidoAtual->prox; 
+    // Se não restarem pratos, remove o pedido inteiro
+    if (atual->listaPratos == NULL) {
+        if (anterior == NULL) {
+            *cabeca = atual->prox;
         } else {
-            Pedido *pedidoAnterior = *cabeca;
-            while(pedidoAnterior->prox != pedidoAtual){
-                pedidoAnterior = pedidoAnterior->prox; 
-            }
-            pedidoAnterior->prox = pedidoAtual->prox; 
+            anterior->prox = atual->prox;
         }
-        free(pedidoAtual);
-        printf("Pedido %d removido com sucesso!\n", idPedido);
+        free(atual);
+        printf("\033[31mPedido removido pois nao restaram pratos.\033[0m\n");
+    } else {
+        printf("\033[32mPrato removido do pedido com sucesso.\033[0m\n");
     }
-} 
+}
 
-void listarPedidosPendentes(Pedido *cabeca){
-    if(cabeca == NULL){ 
+// Lista todos os pedidos pendentes no salão
+void listarPedidosPendentes(Pedido *cabeca) {
+    if (cabeca == NULL) {
         printf("Nenhum pedido pendente.\n");
         return;
     }
 
-    Pedido *atual = cabeca; 
-
-    while(atual != NULL){ 
-        printf("Mesa: %d, ID do Pedido: %d\n", atual->numMesa, atual->idPedido);
+    Pedido *atual = cabeca;
+    while (atual != NULL) {
+        printf("\nPedido ID: %d | Mesa: %d\n", atual->idPedido, atual->numMesa);
         printf("Pratos:\n");
-    
-        PratoNode *pratoAtual = atual->listaPratos;
-        if(pratoAtual == NULL){ 
-            printf("Nenhum prato neste pedido.\n");
-        } else {
-            while(pratoAtual != NULL){ // percorre a lista de pratos
-                printf("- %s\n", pratoAtual->dadosPrato.nome); // exibe o nome do prato
-                pratoAtual = pratoAtual->prox; // avança para o próximo prato
-            }
+
+        PratoNode *prato = atual->listaPratos;
+        while (prato != NULL) {
+            printf(" - %s\n", prato->dadosPrato.nome);
+            prato = prato->prox;
         }
-        
-        printf("\n");
-        atual = atual->prox; // avança para o próximo pedido
+
+        atual = atual->prox;
     }
 }
 
+// Libera a memória de um pedido (incluindo lista de pratos)
+void liberarPedido(Pedido *pedido) {
+    if (pedido == NULL) return;
 
+    PratoNode *atual = pedido->listaPratos;
+    while (atual != NULL) {
+        PratoNode *temp = atual;
+        atual = atual->prox;
+        free(temp);
+    }
+
+    free(pedido);
+}
+
+// Copia um pedido inteiro, incluindo sua lista de pratos
+Pedido* copiarPedido(Pedido *pedidoOriginal) {
+    if (pedidoOriginal == NULL) return NULL;
+
+    Pedido *novoPedido = (Pedido*)malloc(sizeof(Pedido));
+    if (!novoPedido) {
+        printf("\033[31mErro ao alocar memoria para copia do pedido.\033[0m\n");
+        return NULL;
+    }
+
+    novoPedido->numMesa = pedidoOriginal->numMesa;
+    novoPedido->idPedido = pedidoOriginal->idPedido;
+    novoPedido->prox = NULL;
+
+    // Copiar a lista de pratos
+    PratoNode *atualOriginal = pedidoOriginal->listaPratos;
+    PratoNode *ultimoNovo = NULL;
+    novoPedido->listaPratos = NULL;
+
+    while (atualOriginal != NULL) {
+        PratoNode *novoPrato = (PratoNode*)malloc(sizeof(PratoNode));
+        if (!novoPrato) {
+            printf("\033[31mErro ao alocar memoria para prato na copia do pedido.\033[0m\n");
+            liberarPedido(novoPedido);
+            return NULL;
+        }
+        strcpy(novoPrato->dadosPrato.nome, atualOriginal->dadosPrato.nome);
+        novoPrato->prox = NULL;
+
+        if (novoPedido->listaPratos == NULL) {
+            novoPedido->listaPratos = novoPrato;
+        } else {
+            ultimoNovo->prox = novoPrato;
+        }
+        ultimoNovo = novoPrato;
+        atualOriginal = atualOriginal->prox;
+    }
+
+    return novoPedido;
+}
+
+// Imprime um pedido com seus pratos
+void imprimirPedido(Pedido *pedido) {
+    if (pedido == NULL) {
+        printf("\033[31mPedido vazio.\033[0m\n");
+        return;
+    }
+
+    printf("\033[32mPedido ID: %d\033[0m\n", pedido->idPedido);
+    printf("\033[32mMesa: %d\033[0m\n", pedido->numMesa);
+    printf("Pratos:\n");
+
+    PratoNode *atual = pedido->listaPratos;
+    int i = 1;
+    while (atual != NULL) {
+        printf("  %d. %s\n", i, atual->dadosPrato.nome);
+        atual = atual->prox;
+        i++;
+    }
+}

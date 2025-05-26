@@ -1,27 +1,29 @@
 #ifndef SALAO_H
 #define SALAO_H
 
-typedef struct Prato {
+typedef struct prato {
     char nome[50];
 } Prato;
 
-// estrutura de um nó na lista de pratos DENTRO de um pedido
-typedef struct PratoNode {
+typedef struct pratoNode {
     Prato dadosPrato;
-    struct PratoNode *prox;
+    struct pratoNode *prox;
 } PratoNode;
 
-// estrutura de nó na lista ligada de PEDIDO (salão)
-typedef struct Pedido{
+typedef struct pedido {
     int numMesa;
     int idPedido;
-    PratoNode* listaPratos; // Ponteiro para a lista de PratoNode deste pedido
-    struct Pedido *prox; // Ponteiro para o proximo pedido da lista salão 
+    PratoNode *listaPratos;
+    struct pedido *prox;
 } Pedido;
 
-// OPERAÇÕES
-void adicionarPedido(Pedido **cabeca, int numMesa, int idPedido, char prato[][50], int qntdPratos);
-void removerPrato(Pedido **cabeca, int idPedido, const char *nomePrato);
+// Funções já existentes
+void adicionarPedido(Pedido **cabeca, int numMesa, int idPedido, char pratos[][50], int qtdPratos);
 void listarPedidosPendentes(Pedido *cabeca);
+
+// Novas funções auxiliares para o main.c
+Pedido* copiarPedido(Pedido *pedidoOriginal);
+void imprimirPedido(Pedido *pedido);
+void liberarPedido(Pedido *pedido);
 
 #endif

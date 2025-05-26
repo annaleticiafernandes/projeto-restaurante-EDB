@@ -3,42 +3,42 @@
 #include "cardapio.h"
 
 void exibirEntradas(){
-    printf("----------- ENTRADAS -----------\n");
-    printf("1. Sopa de Cebola\n");
-    printf("2. Salada Caesar\n");
-    printf("3. Bruschetta\n");
-    printf("4. Carpaccio de Carne\n");
-    printf("5. Camarao ao Alho\n");
+    printf("\033[3m----------- ENTRADAS -----------\033[0m\n");
+    printf("\033[3m1. Sopa de Cebola\033[0m\n");
+    printf("\033[3m2. Salada Caesar\033[0m\n");
+    printf("\033[3m3. Bruschetta\033[0m\n");
+    printf("\033[3m4. Carpaccio de Carne\033[0m\n");
+    printf("\033[3m5. Camarao ao Alho\033[0m\n");
 }
 
 void exibirPratosPrincipais(){
-    printf("------- PRATOS PRINCIPAIS -------\n");
-    printf("6. Lasanha a Bolonhesa\n");
-    printf("7. File Mignon com Fritas\n");
-    printf("8. Frango Grelhado com Legumes\n");
-    printf("9. Bacalhau a Gomes de Sa\n");
-    printf("10. Risoto de Cogumelos\n");
+    printf("\033[3m------- PRATOS PRINCIPAIS -------\033[0m\n");
+    printf("\033[3m6. Lasanha a Bolonhesa\033[0m\n");
+    printf("\033[3m7. File Mignon com Fritas\033[0m\n");
+    printf("\033[3m8. Frango Grelhado com Legumes\033[0m\n");
+    printf("\033[3m9. Bacalhau a Gomes de Sa\033[0m\n");
+    printf("\033[3m10. Risoto de Cogumelos\033[0m\n");
 }
 
 void exibirSobremesas(){
-    printf("---------- SOBREMESAS ----------\n");
-    printf("11. Tiramisu\n");
-    printf("12. Cheesecake de Frutas Vermelhas\n");
-    printf("13. Mousse de Chocolate\n");
-    printf("14. Pudim de Leite\n");
-    printf("15. Sorvete de Baunilha com Calda de Morango\n");
+    printf("\033[3m---------- SOBREMESAS ----------\033[0m\n");
+    printf("\033[3m11. Tiramisu\033[0m\n");
+    printf("\033[3m12. Cheesecake de Frutas Vermelhas\033[0m\n");
+    printf("\033[3m13. Mousse de Chocolate\033[0m\n");
+    printf("\033[3m14. Pudim de Leite\033[0m\n");
+    printf("\033[3m15. Sorvete de Baunilha com Calda de Morango\033[0m\n");
 }
 
 void exibirCardapio(){
     printf("\n");
-    printf("----------- CARDAPIO -----------\n");
+    printf("\033[3m----------- CARDAPIO -----------\033[0m\n");
     printf("\n");
     exibirEntradas();
     printf("\n");
     exibirPratosPrincipais();
     printf("\n");
     exibirSobremesas();
-    printf("--------------------------------\n");
+    printf("\033[3m--------------------------------\033[0m\n");
 }
 
 void obterNomePrato(int indice, char *nomePrato){

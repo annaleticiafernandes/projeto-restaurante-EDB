@@ -7,16 +7,17 @@
 static Pedido *frente = NULL;
 static Pedido *tras = NULL;
 
+// Função para enfileirar um pedido na cozinha (copia o pedido)
 void enfileirarPedido(Pedido *pedidoOriginal) {
     if (pedidoOriginal == NULL) {
-        printf("Pedido inválido para enfileirar.\n");
+        printf("\033[31mPedido invalido para enfileirar.\033[0m\n");
         return;
     }
 
-    // Cria uma cópia do pedido original (para manter independência entre as listas)
-    Pedido *novoPedido = malloc(sizeof(Pedido));
-    if (novoPedido == NULL) {
-        printf("Erro ao alocar memória para o pedido na cozinha!\n");
+    // Cria uma cópia do pedido original
+    Pedido *novoPedido = (Pedido *)malloc(sizeof(Pedido));
+    if (!novoPedido) {
+        printf("\033[31mErro ao alocar memoria para o pedido na cozinha!\033[0m\n");
         return;
     }
 
@@ -25,19 +26,21 @@ void enfileirarPedido(Pedido *pedidoOriginal) {
     novoPedido->listaPratos = NULL;
     novoPedido->prox = NULL;
 
-    // Copia os pratos do pedido original
-    PratoNode *pratoAtual = pedidoOriginal->listaPratos;
+    // Copia a lista ligada de pratos
+    PratoNode *pratoAtualOrig = pedidoOriginal->listaPratos;
     PratoNode *ultimoPrato = NULL;
 
-    while (pratoAtual != NULL) {
-        PratoNode *novoPrato = malloc(sizeof(PratoNode));
-        if (novoPrato == NULL) {
-            printf("Erro ao alocar memória para um prato na cozinha!\n");
-            pratoAtual = pratoAtual->prox;
+    while (pratoAtualOrig != NULL) {
+        PratoNode *novoPrato = (PratoNode *)malloc(sizeof(PratoNode));
+        if (!novoPrato) {
+            printf("\033[31mErro ao alocar memoria para prato na cozinha!\033[0m\n");
+            // Se quiser, pode liberar toda a cópia feita até aqui para evitar leak
+            // Mas para simplicidade, apenas pula este prato
+            pratoAtualOrig = pratoAtualOrig->prox;
             continue;
         }
 
-        strcpy(novoPrato->dadosPrato.nome, pratoAtual->dadosPrato.nome);
+        strcpy(novoPrato->dadosPrato.nome, pratoAtualOrig->dadosPrato.nome);
         novoPrato->prox = NULL;
 
         if (novoPedido->listaPratos == NULL) {
@@ -47,10 +50,10 @@ void enfileirarPedido(Pedido *pedidoOriginal) {
         }
 
         ultimoPrato = novoPrato;
-        pratoAtual = pratoAtual->prox;
+        pratoAtualOrig = pratoAtualOrig->prox;
     }
 
-    // Adiciona o pedido na fila da cozinha
+    // Enfileira na fila da cozinha (FIFO)
     if (frente == NULL) {
         frente = novoPedido;
         tras = novoPedido;
@@ -59,9 +62,10 @@ void enfileirarPedido(Pedido *pedidoOriginal) {
         tras = novoPedido;
     }
 
-    printf("Pedido %d da mesa %d enviado para a cozinha!\n", novoPedido->idPedido, novoPedido->numMesa);
+    printf("\033[32mPedido %d da mesa %d enviado para a cozinha!\033[0m\n", novoPedido->idPedido, novoPedido->numMesa);
 }
 
+// Função que processa (desenfileira) o próximo pedido da cozinha
 void processarProximoPedido() {
     if (frente == NULL) {
         printf("Nenhum pedido na cozinha para processar.\n");
@@ -71,7 +75,7 @@ void processarProximoPedido() {
     Pedido *pedidoProcessado = frente;
     printf("Processando pedido %d da mesa %d...\n", pedidoProcessado->idPedido, pedidoProcessado->numMesa);
 
-    // Libera a lista de pratos
+    // Libera lista de pratos
     PratoNode *prato = pedidoProcessado->listaPratos;
     while (prato != NULL) {
         PratoNode *temp = prato;
@@ -86,9 +90,10 @@ void processarProximoPedido() {
     }
 
     free(pedidoProcessado);
-    printf("Pedido processado com sucesso!\n");
+    printf("\033[32mPedido processado com sucesso!\033[0m\n");
 }
 
+// Lista todos os pedidos na fila da cozinha
 void listarPedidosCozinha() {
     if (frente == NULL) {
         printf("Nenhum pedido na cozinha.\n");
